@@ -1,0 +1,3 @@
+/Users/yunxiang/Desktop/twentyFour/CMakeFiles/2048Game.dir
+/Users/yunxiang/Desktop/twentyFour/CMakeFiles/edit_cache.dir
+/Users/yunxiang/Desktop/twentyFour/CMakeFiles/rebuild_cache.dir
