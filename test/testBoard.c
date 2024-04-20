@@ -70,22 +70,24 @@ void CombineValue(int * arr,int index_1,int index_2){
 }
 
 void move_up_column(int * arr){
-     bool haveCombined = false;
+     //bool haveCombined = false;
      
      PushtoTop(arr);
       if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
          CombineValue(arr, 2, 3);
-         haveCombined = true;
+         
+        // haveCombined = true;
          PushtoTop(arr);
       }
-       else if(!haveCombined && arr[1] == arr[2]&&arr[1]&&arr[2]) {
+     if(/*!haveCombined &&*/ arr[1] == arr[2]&&arr[1]&&arr[2]) {
          CombineValue(arr, 1, 2);
-         haveCombined = true;
+        
+        // haveCombined = true;
          PushtoTop(arr);
       }
-       else if(!haveCombined && arr[0] == arr[1]&&arr[0]&&arr[1]){
+      if(/*!haveCombined &&*/ arr[0] == arr[1]&&arr[0]&&arr[1]){
          CombineValue(arr, 0, 1);
-         haveCombined = true;
+         //haveCombined = true;
          PushtoTop(arr);
       }
 }
@@ -333,8 +335,9 @@ void move_right(Board board){
 }
 int main(void){
 
-   int board_1 [SIZE][SIZE] = {{0,2,0,4},{2,0,0,0},{4,2,2,0},{0,0,2,4}};
+   int board_1 [SIZE][SIZE] = {{2,2,0,4},{2,0,0,0},{4,2,2,0},{4,0,2,4}};
     int **board_2 = create_board(board_1, SIZE, SIZE);
-    move_down(board_2);
+    print_board(board_2);
+    move_up(board_2);
     print_board(board_2);
 }
