@@ -3,6 +3,17 @@
 #include <time.h>
 #include <stdbool.h>
 #include "colorfulNumber.h"
+#include <unistd.h>
+#include <termios.h>
+
+
+void set_input_mode() {
+    struct termios t;
+    tcgetattr(STDIN_FILENO, &t);
+    t.c_lflag &= ~(ICANON | ECHO);  // Disable canonical mode and echoing
+    tcsetattr(STDIN_FILENO, TCSANOW, &t);
+}//set input mode as raw input;
+
 /*---------------------------MACRO---------------------------*/
 #define SIZE 4
 typedef int** Board;
@@ -26,18 +37,24 @@ char Mode ;
 /*---------------------------FUNCTION---------------------------*/
 void calculateScore(int valueCombined);
 void move_up_column(int * arr);
+void move_down_column(int * arr);
+void move_left_row(int * arr);
+void move_right_row(int * arr);
+
+
 bool isEmptyBound(Board board,char Direction); 
 int nonEmptyNumber(int * arr);
+
 void PushtoTop(int * arr);
-void CombineValue(int * arr,int index_1,int index_2);
-void move_down_column(int * arr);
-OccupiedSeries getNumberBlock(Board board); //return a series of non-empty block in the board
-void init_zero(int *arr);
 void PushtoLeft(int *arr);
-void move_left_row(int * arr);
-void move_left();
 void PushtoRight(int * arr);
-void move_right_row(int * arr);
+void PushtoBottom(int * arr);
+
+void CombineValue(int * arr,int index_1,int index_2);
+
+//OccupiedSeries getNumberBlock(Board board); //return a series of non-empty block in the board
+void init_zero(int *arr);
+void move_left();
 int min_board();
 void spawn_block_easy();
 void reset_game();
@@ -46,10 +63,11 @@ void reset_entrance();
 void quit_game();
 void spawn_block_hard();
 void spawn_block(char Mode);
+void delay_250ms();
 /*---------------------------FUNCTION---------------------------*/
-
-void PushtoBottom(int * arr);
-
+ void delay_250ms(){
+    usleep(250000); // 休眠 0.25 秒
+}
 
  //check if the bound is empty(four sides);
 
@@ -90,85 +108,6 @@ void PushtoTop(int *arr) {
     
     free(Occupied_Series); 
 }
-
-void CombineValue(int * arr,int index_1,int index_2){
-    arr[index_1] = 2 * arr[index_1] ;
-    arr[index_2] = 0;
-}
-
-void move_up_column(int * arr){
-     bool haveCombined = false;
-     
-     PushtoTop(arr);
-      if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
-         CombineValue(arr, 2, 3);
-         calculateScore(arr[2]);
-         haveCombined = true;
-         PushtoTop(arr);
-      }
-       else if(!haveCombined && arr[1] == arr[2]&&arr[1]&&arr[2]) {
-         CombineValue(arr, 1, 2);
-         calculateScore(arr[1]);
-         haveCombined = true;
-         PushtoTop(arr);
-      }
-       else if(!haveCombined && arr[0] == arr[1]&&arr[0]&&arr[1]){
-         CombineValue(arr, 0, 1);
-         calculateScore(arr[0]);
-         haveCombined = true;
-         PushtoTop(arr);
-      }
-}
-void PushtoBottom(int * arr){
-  int j = 0;
-    int *Occupied_Series;
-    int CntNonZero = nonEmptyNumber(arr); 
-    Occupied_Series = (int *)malloc(sizeof(int) * CntNonZero);
-    
-    for (int i = 0; i < SIZE; i++) {
-        if (arr[i] != 0) {
-            Occupied_Series[j++] = arr[i];
-        }
-    }
-
-    for (int j = 0; j < CntNonZero; j++) {
-        arr[j] = Occupied_Series[j];
-    }
-
-    for (int j = CntNonZero; j < SIZE; j++) {
-        arr[j] = 0;
-    }
-    
-    free(Occupied_Series); 
-}
-
-void move_down_column(int * arr){
- bool haveCombined = false;
-     PushtoBottom(arr);
-      if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
-         CombineValue(arr, 2, 3);
-         haveCombined = true;
-         calculateScore(arr[2]);
-         PushtoBottom(arr);
-      }
-       else if(!haveCombined && arr[1] == arr[2]&&arr[1]&&arr[2]) {
-         CombineValue(arr, 1, 2);
-         haveCombined = true;
-         calculateScore(arr[1]);
-         PushtoBottom(arr);
-      }
-       else if(!haveCombined && arr[0] == arr[1]&&arr[0]&&arr[1]){
-         CombineValue(arr, 0, 1);
-         haveCombined = true;
-         calculateScore(arr[0]);
-         PushtoBottom(arr);
-      }
-
-}
-
-
-
-
 void move_up() {
     int haveCombined[SIZE];
     init_zero(haveCombined);
@@ -196,6 +135,128 @@ void move_up() {
         board[i][3] = column_4[i];
     }
 }
+void move_up_column(int * arr){
+     //bool haveCombined = false;
+     
+    if(nonEmptyNumber(arr) == SIZE){
+     PushtoTop(arr);
+      if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
+         CombineValue(arr, 2, 3);
+         calculateScore(arr[3]);
+        // haveCombined = true;
+         PushtoTop(arr);
+      }
+     if(/*!haveCombined &&*/ arr[1] == arr[2]&&arr[1]&&arr[2]) {
+         CombineValue(arr, 1, 2);
+         calculateScore(arr[2]);
+        // haveCombined = true;
+         PushtoTop(arr);
+      }
+      if(/*!haveCombined &&*/ arr[0] == arr[1]&&arr[0]&&arr[1]){
+         CombineValue(arr, 0, 1);
+         calculateScore(arr[1]);
+         //haveCombined = true;
+         PushtoTop(arr);
+      }
+    }
+    else{
+        bool haveCombined = false; 
+
+    
+    PushtoTop(arr);
+
+    
+    for (int i = 1; i < SIZE; i++) {
+        if (arr[i] == arr[i - 1] && arr[i] != 0 && !haveCombined) { 
+            CombineValue(arr, i, i - 1); 
+             calculateScore(arr[i]);
+            haveCombined = true; 
+            PushtoTop(arr); 
+        } else {
+            haveCombined = false;
+        }
+    }
+    }
+}  
+/*fix log:My roommate finds that for case that[2,2,4,4] then oush left should have [4,8,0,0] instead of [2,2,8,8]*/
+/*multiple combinations should be allowed*/
+/*case like [4,2,2,0] and slides left. [4,4,0,0] instead of [8,0,0,0]*/
+void CombineValue(int * arr,int index_1,int index_2){
+    arr[index_1] = 2 * arr[index_1] ;
+    arr[index_2] = 0;
+}
+
+
+void PushtoBottom(int * arr){
+  int j = 0;
+    int *Occupied_Series;
+    int CntNonZero = nonEmptyNumber(arr); 
+    Occupied_Series = (int *)malloc(sizeof(int) * CntNonZero);
+    
+    for (int i = 0; i < SIZE; i++) {
+        if (arr[i] != 0) {
+            Occupied_Series[j++] = arr[i];
+        }
+    }
+
+    for (int j = 0; j < CntNonZero; j++) {
+        arr[j] = Occupied_Series[j];
+    }
+
+    for (int j = CntNonZero; j < SIZE; j++) {
+        arr[j] = 0;
+    }
+    
+    free(Occupied_Series); 
+}
+
+void move_down_column(int * arr){
+ //bool haveCombined = false;
+ if(nonEmptyNumber(arr) == SIZE){
+     PushtoBottom(arr);
+      if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
+         CombineValue(arr, 2, 3);
+         /*haveCombined = true;*/
+         calculateScore(arr[2]);
+         PushtoBottom(arr);
+      }
+        if(/*!haveCombined &&*/ arr[1] == arr[2]&&arr[1]&&arr[2]) {
+         CombineValue(arr, 1, 2);
+        /*haveCombined = true;*/
+         calculateScore(arr[1]);
+         PushtoBottom(arr);
+      }
+        if(/*!haveCombined && */arr[0] == arr[1]&&arr[0]&&arr[1]){
+         CombineValue(arr, 0, 1);
+        /*haveCombined = true;*/
+         calculateScore(arr[0]);
+         PushtoBottom(arr);
+      }
+   }
+else{
+     bool haveCombined = false; 
+
+
+    PushtoTop(arr);
+
+   
+    for (int i = 1; i < SIZE; i++) {
+        if (arr[i] == arr[i - 1] && arr[i] != 0 && !haveCombined) { 
+            CombineValue(arr, i, i - 1); 
+            haveCombined = true; 
+            calculateScore(arr[i]);
+            PushtoTop(arr); 
+        } else {
+            haveCombined = false; 
+        }
+    }
+   }
+}
+
+
+
+
+
 void move_down() {
  
     int haveCombined[SIZE];
@@ -249,27 +310,46 @@ void PushtoLeft(int *arr) {
 }
 
 void move_left_row(int * arr){
-    bool haveCombined = false;
+    if(nonEmptyNumber(arr) == SIZE){
+        /* bool haveCombined = false;*/
      PushtoLeft(arr);
       if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
          CombineValue(arr, 2, 3);
-         haveCombined = true;
+        /* bool haveCombined = false;*/
          calculateScore(arr[2]);
           PushtoLeft(arr);
       }
-       else if(!haveCombined && arr[1] == arr[2]&&arr[1]&&arr[2]) {
+       if(/*!haveCombined &&*/ arr[1] == arr[2]&&arr[1]&&arr[2]) {
          CombineValue(arr, 1, 2);
-         haveCombined = true;
+         /* bool haveCombined = false;*/
          calculateScore(arr[1]);
          PushtoLeft(arr);
       }
-       else if(!haveCombined && arr[0] == arr[1]&&arr[0]&&arr[1]){
+        if(/*!haveCombined &&*/ arr[0] == arr[1]&&arr[0]&&arr[1]){
          CombineValue(arr, 0, 1);
-         haveCombined = true;
+        /* bool haveCombined = false;*/
          calculateScore(arr[0]);
           PushtoLeft(arr);
       }
+    }
+    else{
+     bool haveCombined = false; 
 
+
+    PushtoTop(arr);
+
+    
+    for (int i = 1; i < SIZE; i++) {
+        if (arr[i] == arr[i - 1] && arr[i] != 0 && !haveCombined) { 
+            CombineValue(arr, i, i - 1); 
+            haveCombined = true; 
+            calculateScore(arr[i]);
+            PushtoTop(arr); 
+        } else {
+            haveCombined = false; 
+        }
+    }
+    }
 }
 
 void move_left(){
@@ -323,28 +403,46 @@ void PushtoRight(int * arr){
 }
 
 void move_right_row(int * arr){
-  bool haveCombined = false;
+    if(nonEmptyNumber(arr) == SIZE){
+  /* haveCombined = true;*/
      PushtoRight(arr);
       if(arr[2] == arr[3]&&arr[2]&&arr[3]) {
          CombineValue(arr, 2, 3);
-         haveCombined = true;
+        /* haveCombined = true;*/
          calculateScore(arr[2]);
          PushtoRight(arr);
       }
-       else if(!haveCombined && arr[1] == arr[2]&&arr[1]&&arr[2]) {
+     if(/* haveCombined = true;*/arr[1] == arr[2]&&arr[1]&&arr[2]) {
          CombineValue(arr, 1, 2);
-         haveCombined = true;
+        /* haveCombined = true;*/
          calculateScore(arr[1]);
          PushtoRight(arr);
       }
-       else if(!haveCombined && arr[0] == arr[1]&&arr[0]&&arr[1]){
+     if(/* haveCombined = true;*/ arr[0] == arr[1]&&arr[0]&&arr[1]){
          CombineValue(arr, 0, 1);
-         haveCombined = true;
+         /* haveCombined = true;*/
          calculateScore(arr[0]);
           PushtoRight(arr);
       }
 
+    }
+    else{
+         bool haveCombined = false; 
+    
+    PushtoTop(arr);
 
+    
+    for (int i = 1; i < SIZE; i++) {
+        if (arr[i] == arr[i - 1] && arr[i] != 0 && !haveCombined) { 
+            CombineValue(arr, i, i - 1); 
+            haveCombined = true; 
+            calculateScore(arr[i]);
+            PushtoTop(arr);
+        } else {
+            haveCombined = false; 
+        }
+    }
+    }
 }
 
 void move_right(){
@@ -594,72 +692,61 @@ void new_line(){
     printf("\n");
 }
 int main() {
-    while(!game_over){
+    set_input_mode();
     bool init_show_score = true;
+    bool init_show_mode = true;
     srand(time(NULL)); // time seed
     init_board();
     init_spawn_block();
     init_spawn_block();
     print_board();
-    if(init_show_score){
+
+    if (init_show_score) {
         show_score();
         new_line();
         init_show_score = false;
     }
-    if(init_show_mode){
-        read_mode();
+
+    if (init_show_mode) {
+        read_mode(); 
         new_line();
         init_show_mode = false;
     }
+
     char input;
-   getchar();
-    while (1) {
-        input = getchar();
-        while (getchar() != '\n');
-        if (input == 'w' || input == 'W') {
-            move_up();
-           // spawn_block(Mode);
-              spawn_block_hard();
+
+    while (!game_over) {
+        if (read(STDIN_FILENO, &input, 1) == 1) {
+            if (input == 'q') {
+                quit_game();
+            } else if (input == 'w' || input == 'W') {
+                move_up();
+            } else if (input == 's' || input == 'S') {
+                move_down();
+            } else if (input == 'a' || input == 'A') {
+                move_left();
+            } else if (input == 'd' || input == 'D') {
+                move_right();
+            }
+
+            delay_250ms();
+            spawn_block_hard();
             print_board();
             show_score();
             new_line();
-            
-        } else if (input == 's' || input == 'S') {
-            move_down();
-            //spawn_block(Mode);
-              spawn_block_hard();
-            print_board();
-             show_score();
-            new_line();
-        } else if (input == 'a' || input == 'A') {
-            move_left();
-           // spawn_block(Mode);
-           spawn_block_hard();
-            print_board();
-             show_score();
-           new_line();
-        } else if (input == 'd' || input == 'D') {
-            move_right();
-            //spawn_block(Mode);
-              spawn_block_hard();
-            print_board();
-            show_score();
-            new_line();
-            
+
+            if (check_game_over()) {
+                printf("Game Over!\n");
+                Score = 0;
+                break;
+            }
         }
-          else if (input == 'q' ) {
-           quit_game();
-        }
-        if (check_game_over()) {
-            printf("Game Over!\n");
-            Score = 0;
-            break;
-        }
-     }
-     reset_entrance();
     }
+
+    reset_entrance();
     return 0;
 }
 
 
 //record the round, and the minimum or maximum element of the baord, judge the random number to be generated.
+//fix_log_2
