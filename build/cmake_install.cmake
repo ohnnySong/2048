@@ -1,4 +1,4 @@
-# Install script for directory: /users/yunxiang/Desktop/twentyFour
+# Install script for directory: /Users/yunxiang/Desktop/twentyFour
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/users/yunxiang/Desktop/twentyFour/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/yunxiang/Desktop/twentyFour/source/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

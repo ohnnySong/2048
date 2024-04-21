@@ -1,6 +1,0 @@
-cmake_minimum_required (VERSION 3.15)
-project(test)
-set(SRC 2048game.c)
-add_executable(2048Game ${SRC})
-set(EXECUTABLE_OUTPUT_PATH /Users/yunxiang/Desktop/twentyFour)
-set(CMAKE_CXX_STANDARD 11)
