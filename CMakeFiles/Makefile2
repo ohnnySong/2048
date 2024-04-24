@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /Users/yunxiang/Desktop/twentyFour/source
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/2048Game.dir/all
+all: CMakeFiles/2048.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/2048Game.dir/clean
+clean: CMakeFiles/2048.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/2048Game.dir
+# Target rules for target CMakeFiles/2048.dir
 
 # All Build rule for target.
-CMakeFiles/2048Game.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles --progress-num=1,2 "Built target 2048Game"
-.PHONY : CMakeFiles/2048Game.dir/all
+CMakeFiles/2048.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles --progress-num=1,2 "Built target 2048"
+.PHONY : CMakeFiles/2048.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/2048Game.dir/rule: cmake_check_build_system
+CMakeFiles/2048.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/yunxiang/Desktop/twentyFour/source/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/2048Game.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/2048.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/yunxiang/Desktop/twentyFour/source/CMakeFiles 0
-.PHONY : CMakeFiles/2048Game.dir/rule
+.PHONY : CMakeFiles/2048.dir/rule
 
 # Convenience name for target.
-2048Game: CMakeFiles/2048Game.dir/rule
-.PHONY : 2048Game
+2048: CMakeFiles/2048.dir/rule
+.PHONY : 2048
 
 # clean rule for target.
-CMakeFiles/2048Game.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/clean
-.PHONY : CMakeFiles/2048Game.dir/clean
+CMakeFiles/2048.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/clean
+.PHONY : CMakeFiles/2048.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /Users/yunxiang/Desktop/twentyFour/source
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -84,6 +94,51 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/opt/homebrew/Cellar/cmake/3.29.2/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -117,24 +172,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named 2048Game
+# Target rules for targets named 2048
 
 # Build rule for target.
-2048Game: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 2048Game
-.PHONY : 2048Game
+2048: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 2048
+.PHONY : 2048
 
 # fast build rule for target.
-2048Game/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/build
-.PHONY : 2048Game/fast
+2048/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/build
+.PHONY : 2048/fast
 
 2048game.o: 2048game.c.o
 .PHONY : 2048game.o
 
 # target to build an object file
 2048game.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/2048game.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/2048game.c.o
 .PHONY : 2048game.c.o
 
 2048game.i: 2048game.c.i
@@ -142,7 +197,7 @@ depend:
 
 # target to preprocess a source file
 2048game.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/2048game.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/2048game.c.i
 .PHONY : 2048game.c.i
 
 2048game.s: 2048game.c.s
@@ -150,7 +205,7 @@ depend:
 
 # target to generate assembly for a file
 2048game.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048Game.dir/build.make CMakeFiles/2048Game.dir/2048game.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/2048.dir/build.make CMakeFiles/2048.dir/2048game.c.s
 .PHONY : 2048game.c.s
 
 # Help Target
@@ -160,8 +215,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... 2048Game"
+	@echo "... test"
+	@echo "... 2048"
 	@echo "... 2048game.o"
 	@echo "... 2048game.i"
 	@echo "... 2048game.s"
