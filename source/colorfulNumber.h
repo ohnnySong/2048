@@ -1,96 +1,197 @@
-#include <stdio.h>
-#ifndef _colorful_Number_h
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
 
-#define RESET "\e[0m"
-#define CRESET "\e[0m"
-#define COLOR_RESET "\e[0m"
+#include <stdio.h>
+#ifndef _COLORFUL_NUMBER_H
+#define _COLORFUL_NUMBER_H
+
+#ifdef _WIN32 // Check if compiling on Windows
+#include <windows.h>
+
+#define BLACK   0
+#define RED     FOREGROUND_RED
+#define GREEN   FOREGROUND_GREEN
+#define YELLOW  (FOREGROUND_RED | FOREGROUND_GREEN)
+#define BLUE    FOREGROUND_BLUE
+#define MAGENTA (FOREGROUND_RED | FOREGROUND_BLUE)
+#define CYAN    (FOREGROUND_GREEN | FOREGROUND_BLUE)
+#define WHITE   (FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
+
+#define RESET   WHITE
+#else // Assume compiling on macOS or Linux
+#define BLACK   "\e[0;30m"
+#define RED     "\e[0;31m"
+#define GREEN   "\e[0;32m"
+#define YELLOW  "\e[0;33m"
+#define BLUE    "\e[0;34m"
+#define MAGENTA "\e[0;35m"
+#define CYAN    "\e[0;36m"
+#define WHITE   "\e[0;37m"
+
+#define RESET   "\e[0m"
 #endif
-void red();
-void red () {
-  printf("\033[1;31m");
-}
-void green();
-void green () {
-  printf("\033[1;32m");
-}
-void yellow();
-void yellow(){
-  printf("\033[1;33m");
-}
-void blue();
-void blue(){
-     printf("\033[1;34m");
-}
-void mag();
-void mag(){
-     printf("\033[1;35m");
-}
-void cayn();
-void cayn(){
-     printf("\033[1;36m");
-}
-void reset () {
-  printf("\033[0m");
-}
-void white(){
-    printf("\033[1;37m");
-}
 
 void print_number(int Num);
+
+#endif
 void print_number(int Num) {
-    white(); // 设置颜色为白色
-    printf("| ");
-    reset(); // 恢复默认颜色
+#ifdef _WIN32
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
+
+    printf(WHITE "| "); // Print the pipe character in white color
 
     switch(Num) {
         case 0:
-            white();
+            printf(WHITE "%-4d ", Num);
+
             break;
         case 2:
-            red();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RED);
+#else
+            printf(RED);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 4:
-            green();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, GREEN);
+#else
+            printf(GREEN);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 8:
-            yellow();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, YELLOW);
+#else
+            printf(YELLOW);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 16:
-            blue();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, BLUE);
+#else
+            printf(BLUE);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 32:
-            mag();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, MAGENTA);
+#else
+            printf(MAGENTA);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 64:
-            cayn();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, CYAN);
+#else
+            printf(CYAN);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 128:
-            white();
+            printf(WHITE "%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 256:
-            red();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RED);
+#else
+            printf(RED);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 512:
-            green();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, GREEN);
+#else
+            printf(GREEN);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 1024:
-            yellow();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, YELLOW);
+#else
+            printf(YELLOW);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         case 2048:
-            blue();
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, BLUE);
+#else
+            printf(BLUE);
+#endif
+            printf("%-4d ", Num);
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else       
+            printf(WHITE);
+#endif
             break;
         default:
-            reset(); // 如果数字不在所列出的范围内，则重置为默认颜色
+#ifdef _WIN32
+            SetConsoleTextAttribute(hConsole, RESET);
+#else
+            printf(RESET);
+#endif
+            printf("%-4d ", Num); // If the number is not in the specified range, reset to default color
             break;
     }
-    printf("%-4d ", Num);
-    reset(); // 恢复默认颜色
+#ifdef _WIN32
+    SetConsoleTextAttribute(hConsole, RESET); // Reset console color to default
+#endif
 }

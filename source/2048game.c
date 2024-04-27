@@ -5,8 +5,8 @@
 #include "colorfulNumber.h"
 #include <unistd.h>
 #include <termios.h>
-
-
+#include "clear.h"
+#include "input_ctrl.h"
 void set_input_mode() {
     struct termios t;
     tcgetattr(STDIN_FILENO, &t);
@@ -33,6 +33,8 @@ int BestScore = 0;
 int Score = 0;
 bool init_show_mode = true;
 char Mode ;
+bool is_force = false;
+
 /*---------------------------MACRO---------------------------*/
 /*---------------------------FUNCTION---------------------------*/
 void calculateScore(int valueCombined);
@@ -41,7 +43,7 @@ void move_down_column(int * arr);
 void move_left_row(int * arr);
 void move_right_row(int * arr);
 
-
+void force_quit_game();
 bool isEmptyBound(Board board,char Direction); 
 int nonEmptyNumber(int * arr);
 
@@ -510,7 +512,7 @@ void init_spawn_block() {
 
 
 void print_board() {
-    system("clear"); // clear the terminal
+    clear_screen(); // clear the terminal
     printf("2048 Game\n\n");
     for (int i = 0; i < SIZE; i++) {
       
@@ -619,11 +621,21 @@ void quit_game(){
    game_over = true;
     if (Score > BestScore) {
         BestScore = Score;
+        print_board();
         printf("New best score: %d\n", BestScore);
     }
     else
+       print_board();
        printf("you didn't break the record" );
 }
+void force_quit_game(){
+    print_board();
+    printf("\nYou quit the game\n");
+    usleep(2500000);
+    game_over = true;
+    is_force = true;
+}
+
 bool is_mode_valid = true;
 void read_mode();
 void read_mode() {
@@ -650,22 +662,26 @@ void read_mode() {
 }
 
 void reset_entrance() {
-    printf("Try again? Y/N\n");
     char opt;
-    //ignore
     do {
-        opt = getchar();
-    } while (opt == ' ' || opt == '\n');
+        printf("Try again? Y/N\n");
+        // Ignore whitespace and newline characters
+        do {
+            opt = getchar();
+        } while (opt == ' ' || opt == '\n');
 
-    if (opt == 'Y' || opt == 'y') {
-        reset_game();
-    } else if (opt == 'N' || opt == 'n') {
-        quit_game();
-    } else {
-        printf("Invalid option.\n");
-        while (getchar() != '\n');
-        reset_game();
-    }
+        if (opt == 'Y' || opt == 'y') {
+            reset_game();
+            break; // Break out of the loop if the input is valid
+        } else if (opt == 'N' || opt == 'n') {
+            quit_game();
+            break; // Break out of the loop if the input is valid
+        } else {
+            printf("Invalid option.\n");
+            // Clear input buffer
+            while (getchar() != '\n');
+        }
+    } while (1); // Continue looping until a valid input is provided
 }
 //return the minimum in the board
 int min_board() {
@@ -695,6 +711,7 @@ int main() {
     set_input_mode();
     bool init_show_score = true;
     bool init_show_mode = true;
+    is_force = false;
     srand(time(NULL)); // time seed
     init_board();
     init_spawn_block();
@@ -715,10 +732,12 @@ int main() {
 
     char input;
 
-    while (!game_over) {
+    do {
+
         if (read(STDIN_FILENO, &input, 1) == 1) {
             if (input == 'q') {
-                quit_game();
+               force_quit_game();
+
             } else if (input == 'w' || input == 'W') {
                 move_up();
             } else if (input == 's' || input == 'S') {
@@ -732,6 +751,7 @@ int main() {
             delay_250ms();
             spawn_block_hard();
             print_board();
+            if(!is_force)
             show_score();
             new_line();
 
@@ -741,9 +761,14 @@ int main() {
                 break;
             }
         }
-    }
 
+    }while (!game_over);
+    if(!is_force)
     reset_entrance();
+    /*if(is_force){
+       usleep(250000000);
+    }*/
+    clear_screen();
     return 0;
 }
 
