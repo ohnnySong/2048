@@ -1,4 +1,8 @@
 # ohnny-s-Repo
 this is ohnny's first repo.
-the first file is about a book_search system
-hahahaabcd
+
+how to compile this file under macOS.
+cd source
+./build.sh
+switch to executable
+./2048game
