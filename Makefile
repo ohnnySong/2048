@@ -4,7 +4,7 @@
 CC=gcc
 SRC_DIR=source
 OUT_DIR=tmp
-EXECUTABLE=2048game
+EXECUTABLE=2048gamesdad
 
 # Phony targets for not actual files
 .PHONY: build run
