@@ -1,4 +1,8 @@
 # ohnny-s-Repo
-2048Game in C
-Some functions including storing best score and reseting game are not achieved yet.
-Input_ctrl.h intends to limit the input frequency, but it still has flaws.
+
+this is ohnny's first repo.
+how to compile this file under macOS.
+cd source
+./build.sh
+switch to executable
+./2048game
