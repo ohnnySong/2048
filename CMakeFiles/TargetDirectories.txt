@@ -1,8 +1,0 @@
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/2048.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/test.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/edit_cache.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/rebuild_cache.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/list_install_components.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/install.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/install/local.dir
-/Users/yunxiang/Desktop/twentyFour/source/CMakeFiles/install/strip.dir
