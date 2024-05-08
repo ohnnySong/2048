@@ -40,11 +40,11 @@ This will launch the game in your terminal.
 The goal of 2048 is to slide numbered tiles on a grid to combine them and create a tile with the number 2048.
 
 ### Controls
-- Use the arrow keys to move the tiles:
-  - **Up Arrow**: Moves the tiles upward.
-  - **Down Arrow**: Moves the tiles downward.
-  - **Left Arrow**: Moves the tiles to the left.
-  - **Right Arrow**: Moves the tiles to the right.
+- Use the WASD keys to move the tiles:
+  - **W**: Moves the tiles upward.
+  - **S**: Moves the tiles downward.
+  - **A**: Moves the tiles to the left.
+  - **D**: Moves the tiles to the right.
 
 ### Rules
 - On every turn, a new tile (with a number 2 or 4) randomly appears in an empty spot on the board.
