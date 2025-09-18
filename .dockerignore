@@ -1,0 +1,28 @@
+# Ignore common files
+.git
+.gitignore
+README.md
+*.md
+.DS_Store
+Thumbs.db
+
+# Ignore build artifacts
+*.o
+*.a
+*.so
+*.exe
+*.out
+tmp/
+build/
+dist/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

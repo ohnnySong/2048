@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  os-lab:
+    build: .
+    container_name: os-lab-ubuntu
+    volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    # Uncomment the following lines if you need to run in privileged mode
+    # privileged: true
+    # cap_add:
+    #   - SYS_PTRACE
